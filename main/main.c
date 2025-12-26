@@ -20,6 +20,7 @@
 #include "scale.h"
 #include "needle_hub.h"
 #include "needle_hub_glow.h"
+#include "needle.h"
 
 // Define colors manually
 #define LV_COLOR_RED lv_color_make(0xFF, 0x00, 0x00)
@@ -33,11 +34,13 @@ lv_obj_t *main_scr;
 lv_obj_t *current_img;
 lv_obj_t *dash_cluster_scr;
 lv_obj_t *tach_scale;
-lv_obj_t *speedo_scale;
 lv_obj_t *tach_hub;
 lv_obj_t *tach_hub_glow;
+lv_obj_t *tach_needle;
+lv_obj_t *speedo_scale;
 lv_obj_t *speedo_hub;
 lv_obj_t *speedo_hub_glow;
+lv_obj_t *speedo_needle;
 lv_obj_t *high_beam_icon;
 lv_obj_t *right_turn_icon;
 lv_obj_t *left_turn_icon;
@@ -49,6 +52,7 @@ LV_IMG_DECLARE(dash_cluster);
 LV_IMG_DECLARE(scale);
 LV_IMG_DECLARE(needle_hub);
 LV_IMG_DECLARE(needle_hub_glow);
+LV_IMG_DECLARE(needle);
 LV_IMG_DECLARE(high_beam);
 LV_IMG_DECLARE(right_turn);
 LV_IMG_DECLARE(left_turn);
@@ -100,6 +104,8 @@ static void ign_btn_event_cb(lv_event_t *e)
         lv_obj_set_style_image_recolor_opa(speedo_hub_glow, LV_OPA_TRANSP, 0);
         lv_obj_set_style_image_recolor_opa(tach_hub, LV_OPA_TRANSP, 0);
         lv_obj_set_style_image_recolor_opa(speedo_hub, LV_OPA_TRANSP, 0);
+        lv_obj_set_style_image_recolor_opa(tach_needle, LV_OPA_TRANSP, 0);
+        lv_obj_set_style_image_recolor_opa(speedo_needle, LV_OPA_TRANSP, 0);
 
         /* Create a one‑shot timer to restore colors after 2 seconds */
         lv_timer_create(bulb_check_timer_cb, 2000, NULL);
@@ -116,10 +122,13 @@ static void ign_btn_event_cb(lv_event_t *e)
         lv_obj_set_style_image_recolor_opa(tach_scale, LV_OPA_COVER, 0);
 
         lv_obj_set_style_image_recolor(tach_hub_glow, LV_COLOR_BLACK, 0);
-        lv_obj_set_style_image_recolor_opa(tach_hub_glow, LV_OPA_COVER, 0);
+        lv_obj_set_style_image_recolor_opa(tach_hub_glow, LV_OPA_COVER, 0);       
 
         lv_obj_set_style_image_recolor(tach_hub, LV_COLOR_BLACK, 0);
         lv_obj_set_style_image_recolor_opa(tach_hub, LV_OPA_COVER, 0);
+
+        lv_obj_set_style_image_recolor(tach_needle, LV_COLOR_BLACK, 0);
+        lv_obj_set_style_image_recolor_opa(tach_needle, LV_OPA_COVER, 0);
 
         lv_obj_set_style_image_recolor(speedo_scale, LV_COLOR_BLACK, 0);
         lv_obj_set_style_image_recolor_opa(speedo_scale, LV_OPA_COVER, 0);
@@ -129,6 +138,9 @@ static void ign_btn_event_cb(lv_event_t *e)
 
         lv_obj_set_style_image_recolor(speedo_hub, LV_COLOR_BLACK, 0);
         lv_obj_set_style_image_recolor_opa(speedo_hub, LV_OPA_COVER, 0);
+
+        lv_obj_set_style_image_recolor(speedo_needle, LV_COLOR_BLACK, 0);
+        lv_obj_set_style_image_recolor_opa(speedo_needle, LV_OPA_COVER, 0);
     }
 }
 
@@ -178,7 +190,7 @@ void create_cluster()
 
     tach_hub_glow = lv_image_create(main_scr);
     lv_image_set_src(tach_hub_glow, &needle_hub_glow);
-    lv_obj_align(tach_hub_glow, LV_ALIGN_TOP_LEFT, (416), (266));
+    lv_obj_align(tach_hub_glow, LV_ALIGN_TOP_LEFT, (416), (263));
     lv_obj_set_style_image_recolor(tach_hub_glow, LV_COLOR_BLACK, 0);
     lv_obj_set_style_image_recolor_opa(tach_hub_glow, LV_OPA_COVER, 0);
 
@@ -188,10 +200,16 @@ void create_cluster()
     lv_obj_set_style_image_recolor(tach_hub, LV_COLOR_BLACK, 0);
     lv_obj_set_style_image_recolor_opa(tach_hub, LV_OPA_COVER, 0);
 
+    tach_needle = lv_image_create(main_scr);
+    lv_image_set_src(tach_needle, &needle);
+    lv_obj_align(tach_needle, LV_ALIGN_TOP_LEFT,(800-375), 319);
+    lv_obj_set_style_image_recolor(tach_needle, LV_COLOR_BLACK, 0);
+    lv_obj_set_style_image_recolor_opa(tach_needle, LV_OPA_COVER, 0);
+
     // speedometer base images
     speedo_scale = lv_image_create(main_scr);
     lv_image_set_src(speedo_scale, &scale);
-    lv_obj_align(speedo_scale, LV_ALIGN_TOP_LEFT, 247, 675);
+    lv_obj_align(speedo_scale, LV_ALIGN_TOP_LEFT, 247, 679);
     lv_obj_set_style_image_recolor(speedo_scale, LV_COLOR_BLACK, 0);
     lv_obj_set_style_image_recolor_opa(speedo_scale, LV_OPA_COVER, 0);
 
@@ -207,6 +225,15 @@ void create_cluster()
     lv_obj_set_style_image_recolor(speedo_hub, LV_COLOR_BLACK, 0);
     lv_obj_set_style_image_recolor_opa(speedo_hub, LV_OPA_COVER, 0);
 
+    speedo_needle = lv_image_create(main_scr);
+    lv_image_set_src(speedo_needle, &needle);
+    lv_obj_align(speedo_needle, LV_ALIGN_TOP_LEFT,(800-375), 900);
+    lv_obj_set_style_image_recolor(speedo_needle, LV_COLOR_BLACK, 0);
+    lv_obj_set_style_image_recolor_opa(speedo_needle, LV_OPA_COVER, 0);
+
+
+
+    // Indicator images
     high_beam_icon = lv_image_create(main_scr);
     lv_image_set_src(high_beam_icon, &high_beam);
     lv_obj_align(high_beam_icon, LV_ALIGN_CENTER, 340, 0);

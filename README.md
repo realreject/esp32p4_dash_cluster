@@ -7,9 +7,9 @@ The cluster is designed to be modular, serviceable, and easily expandable as new
 
 Hardware used:
 
-Waveshare ESP32‑P4 DevKit
-JD9365 10.1" RGB Display
-USB‑JTAG + USB‑Serial
+Waveshare ESP32‑P4 DevKit,
+JD9365 10.1" RGB Display,
+USB‑JTAG + USB‑Serial.
 
 
 The official Waveshare wiki for the ESP32‑P4 Dev Kit can be found here:
